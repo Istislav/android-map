@@ -4,7 +4,9 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,6 +16,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -51,27 +56,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
+        List<Marker> markerList = new ArrayList<>();
+
         mMinsk = mMap.addMarker(new MarkerOptions().position(MINSK).title("Minsk"));
         mMinsk.setTag(0);
+        markerList.add(mMinsk);
 
         mSydney = mMap.addMarker(new MarkerOptions().position(SYDNEY).title("Sydney")
         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mSydney.setTag(0);
+        markerList.add(mSydney);
 
         mDurham = mMap.addMarker(new MarkerOptions().position(DURHAM).title("Durham")
         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         mDurham.setTag(0);
+        markerList.add(mDurham);
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        LatLng moscow = new LatLng(55.5815244,36.8251149);
+        for (Marker m : markerList) {
+            Log.d("Marker title", m.getTitle());
+            LatLng latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
+            mMap.addMarker(new MarkerOptions().position(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 2));
+        }
 
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        // the marker with color
-        mMap.addMarker(new MarkerOptions().position(moscow).title("Marker in Moscow")
-        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(moscow)); // only new location
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moscow, 15)); // location with zoom
+//        // Add a marker in Sydney and move the camera
+//        LatLng sydney = new LatLng(-34, 151);
+//        LatLng moscow = new LatLng(55.5815244,36.8251149);
+//
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        // the marker with color
+//        mMap.addMarker(new MarkerOptions().position(moscow).title("Marker in Moscow")
+//        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+//
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(moscow)); // only new location
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moscow, 15)); // location with zoom
     }
 }
