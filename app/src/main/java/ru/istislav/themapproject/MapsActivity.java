@@ -12,11 +12,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private static final LatLng MINSK = new LatLng(53.898295, 27.553700);
+    private static final LatLng SYDNEY = new LatLng(-33.826815, 150.948107);
+    private static final LatLng DURHAM = new LatLng(36.009111, -78.911864);
+
+    private Marker mMinsk;
+    private Marker mSydney;
+    private Marker mDurham;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +49,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        mMinsk = mMap.addMarker(new MarkerOptions().position(MINSK).title("Minsk"));
+        mMinsk.setTag(0);
+
+        mSydney = mMap.addMarker(new MarkerOptions().position(SYDNEY).title("Sydney")
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mSydney.setTag(0);
+
+        mDurham = mMap.addMarker(new MarkerOptions().position(DURHAM).title("Durham")
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        mDurham.setTag(0);
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
