@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private static final LatLng MINSK = new LatLng(53.898295, 27.553700);
@@ -55,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setOnMarkerClickListener(this); // to listen clicks in this class
 
         List<Marker> markerList = new ArrayList<>();
 
@@ -91,5 +93,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(moscow)); // only new location
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moscow, 15)); // location with zoom
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Integer clickCount = (Integer) marker.getTag();
+        if (clickCount != null) {
+            clickCount++;
+            marker.setTag(clickCount);
+            Toast.makeText(this, marker.getTitle() + " has been clicked " +
+                    clickCount + " times", Toast.LENGTH_SHORT).show();
+        }
+
+        return false;
     }
 }
