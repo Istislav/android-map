@@ -89,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.d("My location: ", location.toString());
+                mMap.clear();
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng).title("New location"));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 2));
