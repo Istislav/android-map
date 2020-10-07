@@ -102,8 +102,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 try {
                     List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    String fullAddress = "";
                     if (addressList!= null && addressList.size() > 0) {
-                        Toast.makeText(MapsActivity.this, addressList.get(0).toString(), Toast.LENGTH_SHORT).show();
+                        if(addressList.get(0).getAddressLine(0) != null) {
+                            fullAddress += addressList.get(0).getAddressLine(0) + " ";
+                        }
+                        if(addressList.get(0).getSubAdminArea() != null) {
+                            fullAddress += addressList.get(0).getSubAdminArea() + " ";
+                        }
+                        Toast.makeText(MapsActivity.this, fullAddress, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MapsActivity.this, "No address!", Toast.LENGTH_SHORT).show();
                     }
